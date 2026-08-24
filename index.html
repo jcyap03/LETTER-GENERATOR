@@ -312,16 +312,7 @@
 
     <div id="subscriptionFields" class="section request-fields hidden">
       <div class="section-title">New Subscription Confirmation</div>
-      <div class="row">
-        <div>
-          <label>PO No.</label>
-          <input id="poNo" oninput="updatePreview()">
-        </div>
-        <div>
-          <label>PO Date</label>
-          <input type="date" id="poDate" oninput="updatePreview()">
-        </div>
-      </div>
+      
       <label>Subscription Items</label>
       <div id="subscriptionRows"></div>
       <button class="btn secondary mini" onclick="addSubscriptionRow()" type="button">+ Add Subscription Row</button>
@@ -620,10 +611,7 @@ function updatePreview(){
     body=`
       <p>We hereby confirm our request for the following new subscription(s) with CelcomDigi:</p>
       ${commonTable()}
-      <table class="info-table">
-        <tr><td>PO No.</td><td>${esc(value("poNo","-"))}</td></tr>
-        <tr><td>PO Date</td><td>${fmtDate(value("poDate"))}</td></tr>
-      </table>
+      
       <table>
         <thead>
           <tr>
