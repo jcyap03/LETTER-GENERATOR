@@ -270,20 +270,6 @@
 
       <label>Billing Account / Account No.</label>
       <input id="accountNo" placeholder="Optional" oninput="updatePreview()">
-
-      <div class="row">
-        <div>
-          <label>Contact Person</label>
-          <input id="contactPerson" placeholder="Name" oninput="updatePreview()">
-        </div>
-        <div>
-          <label>Contact No.</label>
-          <input id="contactNo" placeholder="01X-XXXXXXX" oninput="updatePreview()">
-        </div>
-      </div>
-
-      <label>Email</label>
-      <input type="email" id="contactEmail" placeholder="name@company.com" oninput="updatePreview()">
     </div>
 
     <div id="creditFields" class="section request-fields">
@@ -469,9 +455,6 @@ function commonTable(){
       <tr><td>Company Name</td><td>${esc(value("companyName","-"))}</td></tr>
       <tr><td>Business Registration No.</td><td>${esc(value("brn","-"))}</td></tr>
       <tr><td>Billing Account / Account No.</td><td>${esc(value("accountNo","-"))}</td></tr>
-      <tr><td>Contact Person</td><td>${esc(value("contactPerson","-"))}</td></tr>
-      <tr><td>Contact No.</td><td>${esc(value("contactNo","-"))}</td></tr>
-      <tr><td>Email</td><td>${esc(value("contactEmail","-"))}</td></tr>
     </table>`;
 }
 function addTerminationRow(data={}){
