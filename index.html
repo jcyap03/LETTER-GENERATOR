@@ -308,21 +308,8 @@
 
     <div id="creditFields" class="section request-fields">
       <div class="section-title">Credit Limit Adjustment</div>
-      <label>Adjustment Type</label>
-      <select id="creditAction" onchange="updatePreview()">
-        <option value="increase">Increase Credit Limit</option>
-        <option value="reduce">Reduce Credit Limit</option>
-      </select>
-      <div class="row">
-        <div>
-          <label>Current Limit (RM)</label>
-          <input type="number" id="currentLimit" min="0" step="0.01" oninput="updatePreview()">
-        </div>
-        <div>
-          <label>Requested Limit (RM)</label>
-          <input type="number" id="newLimit" min="0" step="0.01" oninput="updatePreview()">
-        </div>
-      </div>
+      <label>New Credit Limit (RM)</label>
+      <input type="number" id="newLimit" min="0" step="0.01" placeholder="Enter new credit limit amount" oninput="updatePreview()">
       <label>Affected Mobile / Service No.</label>
       <textarea id="creditServices" placeholder="Enter one or multiple numbers" oninput="updatePreview()"></textarea>
       <label>Reason / Justification</label>
@@ -405,13 +392,10 @@
       <input id="signDesignation" placeholder="Director / Manager" oninput="updatePreview()">
       <div class="row">
         <div>
-          <label>Contact No.</label>
-          <input id="signContact" oninput="updatePreview()">
+          <label>NRIC No.</label>
+          <input id="signContact" placeholder="e.g. 800101-12-3456" oninput="updatePreview()">
         </div>
-        <div>
-          <label>Email</label>
-          <input id="signEmail" oninput="updatePreview()">
-        </div>
+
       </div>
     </div>
 
@@ -441,8 +425,8 @@
         <div class="signature-space"></div>
         <div><strong id="pSignName">[AUTHORIZED SIGNATORY]</strong></div>
         <div id="pSignDesignation">[DESIGNATION]</div>
-        <div>Contact No.: <span id="pSignContact">-</span></div>
-        <div>Email: <span id="pSignEmail">-</span></div>
+        <div>NRIC No.: <span id="pSignContact">-</span></div>
+        
       </div>
 
       <div class="company-stamp-area"><div class="company-stamp-label">COMPANY STAMP</div><div class="company-stamp-box"></div></div>
@@ -572,27 +556,23 @@ function updatePreview(){
   document.getElementById("pSignName").textContent=value("signName","[AUTHORIZED SIGNATORY]");
   document.getElementById("pSignDesignation").textContent=value("signDesignation","[DESIGNATION]");
   document.getElementById("pSignContact").textContent=value("signContact","-");
-  document.getElementById("pSignEmail").textContent=value("signEmail","-");
 
   const type=value("requestType","credit");
   let subject="", body="";
 
   if(type==="credit"){
-    const action=value("creditAction","increase");
-    const actionText=action==="increase"?"INCREASE":"REDUCE";
-    subject=`REQUEST TO ${actionText} CREDIT LIMIT`;
+    subject="CREDIT LIMIT ADJUSTMENT";
     body=`
       <p>We refer to the telecommunications account registered under <strong>${esc(company)}</strong>.</p>
-      <p>We would like to request for a ${action==="increase"?"increase":"reduction"} in the credit limit as detailed below:</p>
+      <p>We would like to request for a credit limit adjustment as detailed below:</p>
       ${commonTable()}
       <table class="info-table">
         <tr><td>Affected Mobile / Service No.</td><td>${nl(value("creditServices","-"))}</td></tr>
-        <tr><td>Current Credit Limit</td><td>${money(value("currentLimit","0"))}</td></tr>
-        <tr><td>Requested New Credit Limit</td><td>${money(value("newLimit","0"))}</td></tr>
+        <tr><td>New Credit Limit</td><td>${money(value("newLimit","0"))}</td></tr>
         <tr><td>Requested Effective Date</td><td>${fmtDate(value("creditEffectiveDate"))}</td></tr>
         <tr><td>Reason / Justification</td><td>${nl(value("creditReason","-"))}</td></tr>
       </table>
-      <p>We kindly seek your assistance to process the above request accordingly.</p>`;
+      <p>We kindly seek your assistance to process the above credit limit adjustment accordingly.</p>`;
   }
 
   if(type==="termination"){
@@ -705,7 +685,6 @@ function clearForm(){
   document.getElementById("recipientDept").value="CelcomDigi Business Customer Service";
   document.getElementById("recipientCompany").value="CelcomDigi Berhad";
   document.getElementById("requestType").value="credit";
-  document.getElementById("creditAction").value="increase";
   document.getElementById("terminationRows").innerHTML="";
   document.getElementById("subscriptionRows").innerHTML="";
   addTerminationRow();
