@@ -129,28 +129,28 @@
     min-height:297mm;
     background:#fff;
     margin:auto;
-    padding:20mm 19mm;
+    padding:12mm 14mm;
     box-shadow:0 8px 28px rgba(15,23,42,.13);
-    font-size:11pt;
-    line-height:1.52;
+    font-size:10.5pt;
+    line-height:1.42;
   }
-  .paper p{margin:0 0 13px}
-  .date{margin-bottom:22px}
-  .recipient{margin-bottom:22px}
+  .paper p{margin:0 0 10px}
+  .date{margin-bottom:14px}
+  .recipient{margin-bottom:14px}
   .subject{
     font-weight:700;
     text-transform:uppercase;
     text-decoration:underline;
-    margin:22px 0 18px;
+    margin:16px 0 12px;
   }
   table{
     width:100%;
     border-collapse:collapse;
-    margin:12px 0 18px;
+    margin:9px 0 13px;
   }
   td,th{
     border:1px solid #C9D3DD;
-    padding:7px 8px;
+    padding:5px 6px;
     vertical-align:top;
     text-align:left;
   }
@@ -163,8 +163,8 @@
     background:#F8FAFC;
     font-weight:700;
   }
-  .signature{margin-top:30px}
-  .signature-space{height:58px}
+  .signature{margin-top:18px}
+  .signature-space{height:38px}
   .small-note{
     font-size:9.5pt;
     color:#52606D;
@@ -200,9 +200,9 @@
       min-height:auto;
       margin:0;
       box-shadow:none;
-      padding:8mm 13mm;
-      font-size:9.2pt;
-      line-height:1.32;
+      padding:7mm 10mm;
+      font-size:9.4pt;
+      line-height:1.30;
     }
     .paper p{margin:0 0 8px}
     .date{margin-bottom:12px}
@@ -224,6 +224,18 @@
     }
     @page{size:A4;margin:0}
   }
+
+  .info-table td:first-child{
+    width:34%;
+  }
+  #letterBody table:not(.info-table){
+    table-layout:auto;
+  }
+  #letterBody table:not(.info-table) th,
+  #letterBody table:not(.info-table) td{
+    font-size:9.5pt;
+  }
+
 </style>
 </head>
 <body>
