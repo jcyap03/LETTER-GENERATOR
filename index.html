@@ -238,7 +238,7 @@
       <select id="requestType" onchange="switchRequest();updatePreview()">
         <option value="credit">Credit Limit Adjustment</option>
         <option value="termination">Termination Request</option>
-        <option value="subscription">PO / New Subscription Confirmation</option>
+        <option value="subscription">New Subscription Confirmation</option>
         <option value="tos">Transfer of Service / Ownership</option>
         <option value="billing">Billing / Account Request</option>
         <option value="custom">Custom Corporate Letter</option>
@@ -311,7 +311,7 @@
     </div>
 
     <div id="subscriptionFields" class="section request-fields hidden">
-      <div class="section-title">PO / New Subscription Confirmation</div>
+      <div class="section-title">New Subscription Confirmation</div>
       <div class="row">
         <div>
           <label>PO No.</label>
@@ -597,7 +597,7 @@ function updatePreview(){
   }
 
   if(type==="subscription"){
-    subject="PURCHASE ORDER CONFIRMATION / NEW SUBSCRIPTION REQUEST";
+    subject="NEW SUBSCRIPTION CONFIRMATION";
     const rows=getSubscriptionRows();
     let totalQty=0,totalMonthly=0;
     const rowsHtml=(rows.length?rows:[{}]).map((x,i)=>{
@@ -618,7 +618,7 @@ function updatePreview(){
       </tr>`;
     }).join("");
     body=`
-      <p>We refer to our purchase order / subscription arrangement with CelcomDigi. We hereby confirm our request for the following new subscription(s):</p>
+      <p>We hereby confirm our request for the following new subscription(s) with CelcomDigi:</p>
       ${commonTable()}
       <table class="info-table">
         <tr><td>PO No.</td><td>${esc(value("poNo","-"))}</td></tr>
@@ -707,4 +707,3 @@ function clearForm(){
 </script>
 </body>
 </html>
-
