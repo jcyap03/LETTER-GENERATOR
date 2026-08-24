@@ -1,360 +1,689 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CelcomDigi Termination Request Form</title>
-  <style>
-    :root {
-      --ink: #111;
-      --line: #111;
-      --paper: #fff;
-      --panel: #f4f6f8;
-      --accent: #1557b0;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Master Corporate Letter Generator</title>
+<style>
+  :root{
+    --primary:#183B5B;
+    --accent:#2563EB;
+    --bg:#EEF3F7;
+    --panel:#FFFFFF;
+    --line:#D7E0E8;
+    --muted:#64748B;
+    --danger:#B91C1C;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    color:#172033;
+  }
+  .app{
+    display:grid;
+    grid-template-columns:440px 1fr;
+    min-height:100vh;
+  }
+  .panel{
+    background:var(--panel);
+    border-right:1px solid var(--line);
+    padding:22px;
+    overflow:auto;
+  }
+  h1{
+    margin:0;
+    color:var(--primary);
+    font-size:22px;
+  }
+  .intro{
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.45;
+    margin:6px 0 20px;
+  }
+  .section{
+    border-top:1px solid #E8EDF2;
+    padding-top:15px;
+    margin-top:16px;
+  }
+  .section:first-of-type{border-top:0;padding-top:0}
+  .section-title{
+    text-transform:uppercase;
+    color:var(--primary);
+    font-weight:700;
+    font-size:12px;
+    letter-spacing:.5px;
+    margin-bottom:8px;
+  }
+  label{
+    display:block;
+    font-size:12px;
+    font-weight:700;
+    margin:9px 0 5px;
+  }
+  input,select,textarea{
+    width:100%;
+    padding:10px 11px;
+    border:1px solid var(--line);
+    border-radius:7px;
+    background:#FFF;
+    font-size:14px;
+  }
+  textarea{min-height:74px;resize:vertical}
+  .row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+  }
+  .row3{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:9px;
+  }
+  .btn{
+    border:0;
+    padding:10px 12px;
+    border-radius:7px;
+    font-weight:700;
+    cursor:pointer;
+  }
+  .primary{background:var(--accent);color:#fff}
+  .secondary{background:#E8EEF6;color:var(--primary)}
+  .success{background:#0F766E;color:#fff}
+  .danger{background:#FEE2E2;color:var(--danger)}
+  .mini{
+    padding:7px 9px;
+    font-size:12px;
+  }
+  .button-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+    margin-top:16px;
+  }
+  .button-grid .wide{grid-column:1/-1}
+  .repeat-box{
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:10px;
+    margin:8px 0;
+    background:#FAFCFE;
+  }
+  .repeat-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:8px;
+    font-weight:700;
+    color:var(--primary);
+  }
+  .preview-wrap{
+    padding:28px;
+    overflow:auto;
+  }
+  .paper{
+    width:210mm;
+    min-height:297mm;
+    background:#fff;
+    margin:auto;
+    padding:20mm 19mm;
+    box-shadow:0 8px 28px rgba(15,23,42,.13);
+    font-size:11pt;
+    line-height:1.52;
+  }
+  .paper p{margin:0 0 13px}
+  .date{margin-bottom:22px}
+  .recipient{margin-bottom:22px}
+  .subject{
+    font-weight:700;
+    text-transform:uppercase;
+    text-decoration:underline;
+    margin:22px 0 18px;
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    margin:12px 0 18px;
+  }
+  td,th{
+    border:1px solid #C9D3DD;
+    padding:7px 8px;
+    vertical-align:top;
+    text-align:left;
+  }
+  th{
+    background:#F3F6F9;
+    font-size:10pt;
+  }
+  .info-table td:first-child{
+    width:36%;
+    background:#F8FAFC;
+    font-weight:700;
+  }
+  .signature{margin-top:30px}
+  .signature-space{height:58px}
+  .small-note{
+    font-size:9.5pt;
+    color:#52606D;
+    margin-top:15px;
+  }
+  .hidden{display:none!important}
+  .inline-actions{
+    display:flex;
+    gap:8px;
+    margin-top:8px;
+  }
+  .badge{
+    display:inline-block;
+    font-size:11px;
+    padding:3px 7px;
+    border-radius:999px;
+    background:#E8EEF6;
+    color:var(--primary);
+    margin-left:6px;
+  }
+
+  @media (max-width:1100px){
+    .app{grid-template-columns:1fr}
+    .panel{border-right:0;border-bottom:1px solid var(--line)}
+    .preview-wrap{padding:14px}
+  }
+  @media print{
+    body{background:#fff}
+    .panel{display:none!important}
+    .preview-wrap{padding:0}
+    .paper{
+      width:auto;
+      min-height:auto;
+      margin:0;
+      box-shadow:none;
+      padding:14mm 16mm;
     }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      color: var(--ink);
-      background: var(--panel);
-    }
-
-    .toolbar {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      padding: 12px 16px;
-      background: #1f2937;
-      color: white;
-      box-shadow: 0 2px 8px rgba(0,0,0,.18);
-    }
-
-    .toolbar button {
-      border: 0;
-      border-radius: 6px;
-      padding: 10px 16px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .primary { background: #ffd100; color: #111; }
-    .secondary { background: #fff; color: #111; }
-    .danger { background: #dc3545; color: #fff; }
-    .toolbar small { opacity: .85; }
-
-    .page {
-      width: 210mm;
-      min-height: 297mm;
-      margin: 24px auto;
-      padding: 18mm 18mm 16mm;
-      background: var(--paper);
-      box-shadow: 0 4px 20px rgba(0,0,0,.15);
-      font-size: 15px;
-      line-height: 1.35;
-    }
-
-    .row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .date-row { margin-bottom: 24px; }
-    .company-line { margin-bottom: 40px; }
-
-    h1 {
-      margin: 0 0 22px;
-      font-size: 18px;
-      text-decoration: underline;
-      text-transform: uppercase;
-    }
-
-    p { margin: 0 0 20px; }
-
-    label { font-weight: 700; }
-
-    input[type="text"],
-    input[type="date"],
-    textarea {
-      font: inherit;
-      color: inherit;
-      background: transparent;
-      border: 0;
-      border-bottom: 1px solid var(--line);
-      border-radius: 0;
-      padding: 3px 4px;
-      outline: none;
-    }
-
-    input:focus, textarea:focus {
-      background: #fff8cc;
-      box-shadow: inset 0 -2px 0 var(--accent);
-    }
-
-    .date-input { width: 165px; }
-    .account-input { flex: 1; max-width: 460px; }
-
-    .type-row { margin-top: 2px; }
-    .type-option {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-right: 18px;
-      font-weight: 400;
-    }
-
-    input[type="checkbox"] {
-      width: 17px;
-      height: 17px;
-      accent-color: #111;
-    }
-
-    table {
-      width: 78%;
-      margin: 42px auto 44px;
-      border-collapse: collapse;
-      table-layout: fixed;
-    }
-
-    th, td {
-      border: 1.5px solid var(--line);
-      height: 38px;
-      padding: 6px 7px;
-      text-align: left;
-    }
-
-    th:nth-child(1), td:nth-child(1),
-    th:nth-child(3), td:nth-child(3) {
-      width: 10%;
-    }
-
-    th:nth-child(2), td:nth-child(2),
-    th:nth-child(4), td:nth-child(4) {
-      width: 40%;
-    }
-
-    td input {
-      width: 100%;
-      height: 26px;
-      border: 0 !important;
-      padding: 2px 3px;
-    }
-
-    .thanks { margin-top: 10px; }
-    .signature-block { margin-top: 76px; }
-    .signature-line {
-      width: 280px;
-      border-top: 1px solid var(--line);
-      margin-bottom: 4px;
-    }
-
-    .signature-field {
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-      margin: 3px 0;
-    }
-
-    .signature-field input { width: 220px; }
-
-    .stamp-box {
-      width: 220px;
-      min-height: 58px;
-      resize: none;
-      vertical-align: top;
-      border: 1px dashed #777;
-      padding: 5px;
-      margin-top: 4px;
-    }
-
-    .hint {
-      max-width: 210mm;
-      margin: -12px auto 20px;
-      color: #555;
-      font-size: 13px;
-      text-align: center;
-    }
-
-    @page {
-      size: A4;
-      margin: 0;
-    }
-
-    @media print {
-      body { background: #fff; }
-      .toolbar, .hint { display: none !important; }
-      .page {
-        margin: 0;
-        width: 210mm;
-        min-height: 297mm;
-        box-shadow: none;
-      }
-      input, textarea {
-        background: transparent !important;
-        box-shadow: none !important;
-      }
-      .stamp-box { border-color: transparent; }
-    }
-
-    @media (max-width: 850px) {
-      .page {
-        width: calc(100% - 20px);
-        min-height: auto;
-        margin: 10px;
-        padding: 28px 20px;
-      }
-      table { width: 100%; }
-      .toolbar small { width: 100%; }
-    }
-  </style>
+    @page{size:A4;margin:0}
+  }
+</style>
 </head>
 <body>
-  <div class="toolbar">
-    <button class="primary" onclick="generatePDF()">Generate PDF</button>
-    <button class="secondary" onclick="saveForm()">Save Form</button>
-    <button class="secondary" onclick="loadForm()">Load Saved</button>
-    <button class="danger" onclick="clearForm()">Clear</button>
-    <small>Generate PDF opens the print window. Select “Save as PDF”.</small>
-  </div>
+<div class="app">
+  <aside class="panel">
+    <h1>Master Corporate Letter Generator</h1>
+    <div class="intro">One offline form for common corporate requests. Select a request type and the relevant fields will appear automatically.</div>
 
-  <main class="page" id="documentPage">
-    <div class="row date-row">
-      <span>Date:</span>
-      <input id="date" class="date-input" type="date" />
+    <div class="section">
+      <div class="section-title">Request Type</div>
+      <label>Letter / Request</label>
+      <select id="requestType" onchange="switchRequest();updatePreview()">
+        <option value="credit">Credit Limit Adjustment</option>
+        <option value="termination">Termination Request</option>
+        <option value="subscription">PO / New Subscription Confirmation</option>
+        <option value="tos">Transfer of Service / Ownership</option>
+        <option value="billing">Billing / Account Request</option>
+        <option value="custom">Custom Corporate Letter</option>
+      </select>
     </div>
 
-    <div class="company-line">CelcomDigi Berhad</div>
+    <div class="section">
+      <div class="section-title">Common Company Details</div>
+      <label>Letter Date</label>
+      <input type="date" id="letterDate" oninput="updatePreview()">
 
-    <h1>Re: Termination Request</h1>
+      <label>Company Name</label>
+      <input id="companyName" placeholder="e.g. ABC SDN. BHD." oninput="updatePreview()">
 
-    <p>
-      Hereby, we would like to request to terminate the below lines with immediate effect.<br>
-      We are aware there will be a final bill, and our company will be fully responsible for any amount balance after termination.
-    </p>
+      <label>Business Registration No.</label>
+      <input id="brn" placeholder="e.g. 202001234567" oninput="updatePreview()">
 
-    <div class="row">
-      <label for="accountName">Account Name:</label>
-      <input id="accountName" class="account-input" type="text" />
+      <label>Billing Account / Account No.</label>
+      <input id="accountNo" placeholder="Optional" oninput="updatePreview()">
+
+      <div class="row">
+        <div>
+          <label>Contact Person</label>
+          <input id="contactPerson" placeholder="Name" oninput="updatePreview()">
+        </div>
+        <div>
+          <label>Contact No.</label>
+          <input id="contactNo" placeholder="01X-XXXXXXX" oninput="updatePreview()">
+        </div>
+      </div>
+
+      <label>Email</label>
+      <input type="email" id="contactEmail" placeholder="name@company.com" oninput="updatePreview()">
     </div>
 
-    <div class="row type-row">
-      <label>Type:</label>
-      <label class="type-option"><input id="celcom" type="checkbox" /> Celcom</label>
-      <label class="type-option"><input id="digi" type="checkbox" /> Digi</label>
+    <div id="creditFields" class="section request-fields">
+      <div class="section-title">Credit Limit Adjustment</div>
+      <label>Adjustment Type</label>
+      <select id="creditAction" onchange="updatePreview()">
+        <option value="increase">Increase Credit Limit</option>
+        <option value="reduce">Reduce Credit Limit</option>
+      </select>
+      <div class="row">
+        <div>
+          <label>Current Limit (RM)</label>
+          <input type="number" id="currentLimit" min="0" step="0.01" oninput="updatePreview()">
+        </div>
+        <div>
+          <label>Requested Limit (RM)</label>
+          <input type="number" id="newLimit" min="0" step="0.01" oninput="updatePreview()">
+        </div>
+      </div>
+      <label>Affected Mobile / Service No.</label>
+      <textarea id="creditServices" placeholder="Enter one or multiple numbers" oninput="updatePreview()"></textarea>
+      <label>Reason / Justification</label>
+      <textarea id="creditReason" placeholder="Reason for adjustment" oninput="updatePreview()"></textarea>
+      <label>Requested Effective Date</label>
+      <input type="date" id="creditEffectiveDate" oninput="updatePreview()">
     </div>
 
-    <table aria-label="Termination line list">
-      <thead>
-        <tr>
-          <th>No</th>
-          <th>MSISDN</th>
-          <th>No</th>
-          <th>MSISDN</th>
-        </tr>
-      </thead>
-      <tbody id="msisdnRows"></tbody>
-    </table>
+    <div id="terminationFields" class="section request-fields hidden">
+      <div class="section-title">Termination Request</div>
+      <label>Requested Termination Date</label>
+      <input type="date" id="terminationDate" oninput="updatePreview()">
+      <label>Reason</label>
+      <textarea id="terminationReason" placeholder="e.g. No longer required / restructuring / cost optimization" oninput="updatePreview()"></textarea>
+      <label>Termination Numbers</label>
+      <div id="terminationRows"></div>
+      <button class="btn secondary mini" onclick="addTerminationRow()" type="button">+ Add Number</button>
+    </div>
 
-    <p class="thanks">Thank you</p>
-    <p style="margin-top:46px;">Yours sincerely,</p>
+    <div id="subscriptionFields" class="section request-fields hidden">
+      <div class="section-title">PO / New Subscription Confirmation</div>
+      <div class="row">
+        <div>
+          <label>PO No.</label>
+          <input id="poNo" oninput="updatePreview()">
+        </div>
+        <div>
+          <label>PO Date</label>
+          <input type="date" id="poDate" oninput="updatePreview()">
+        </div>
+      </div>
+      <label>Subscription Items</label>
+      <div id="subscriptionRows"></div>
+      <button class="btn secondary mini" onclick="addSubscriptionRow()" type="button">+ Add Subscription Row</button>
+      <label>Overall Notes / Special Terms</label>
+      <textarea id="subscriptionNotes" placeholder="e.g. device subsidy, top-up, number reservation, delivery note" oninput="updatePreview()"></textarea>
+    </div>
 
-    <div class="signature-block">
-      <div class="signature-line"></div>
-      <div class="signature-field">
-        <span>Director Name:</span>
-        <input id="directorName" type="text" />
+    <div id="tosFields" class="section request-fields hidden">
+      <div class="section-title">Transfer of Service / Ownership</div>
+      <label>Transfer Type</label>
+      <select id="tosType" onchange="updatePreview()">
+        <option value="company">Company to Company</option>
+        <option value="personal">Company to Personal</option>
+      </select>
+      <label>Transfer To</label>
+      <input id="transferTo" placeholder="New company / individual name" oninput="updatePreview()">
+      <label>New BRN / NRIC</label>
+      <input id="transferId" placeholder="BRN or NRIC" oninput="updatePreview()">
+      <label>Numbers / Services to Transfer</label>
+      <textarea id="transferNumbers" placeholder="One or multiple numbers" oninput="updatePreview()"></textarea>
+      <label>Effective Date</label>
+      <input type="date" id="transferDate" oninput="updatePreview()">
+    </div>
+
+    <div id="billingFields" class="section request-fields hidden">
+      <div class="section-title">Billing / Account Request</div>
+      <label>Request Subject</label>
+      <input id="billingSubject" placeholder="e.g. Request to Transfer Payment / Update Billing Address" oninput="updatePreview()">
+      <label>Request Details</label>
+      <textarea id="billingDetails" placeholder="Describe the billing/account request" oninput="updatePreview()"></textarea>
+      <label>Affected Account / Mobile No.</label>
+      <textarea id="billingAffected" placeholder="Account or numbers" oninput="updatePreview()"></textarea>
+    </div>
+
+    <div id="customFields" class="section request-fields hidden">
+      <div class="section-title">Custom Corporate Letter</div>
+      <label>Subject</label>
+      <input id="customSubject" placeholder="Letter subject" oninput="updatePreview()">
+      <label>Opening / Request Details</label>
+      <textarea id="customBody" placeholder="State the request or confirmation" oninput="updatePreview()"></textarea>
+      <label>Additional Details</label>
+      <textarea id="customAdditional" placeholder="Optional supporting details" oninput="updatePreview()"></textarea>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Recipient</div>
+      <label>Department / Recipient</label>
+      <input id="recipientDept" value="CelcomDigi Business Customer Service" oninput="updatePreview()">
+      <label>Company</label>
+      <input id="recipientCompany" value="CelcomDigi Berhad" oninput="updatePreview()">
+    </div>
+
+    <div class="section">
+      <div class="section-title">Authorized Signatory</div>
+      <label>Name</label>
+      <input id="signName" placeholder="Authorized Signatory" oninput="updatePreview()">
+      <label>Designation</label>
+      <input id="signDesignation" placeholder="Director / Manager" oninput="updatePreview()">
+      <div class="row">
+        <div>
+          <label>Contact No.</label>
+          <input id="signContact" oninput="updatePreview()">
+        </div>
+        <div>
+          <label>Email</label>
+          <input id="signEmail" oninput="updatePreview()">
+        </div>
       </div>
-      <div class="signature-field">
-        <span>NRIC:</span>
-        <input id="nric" type="text" />
+    </div>
+
+    <div class="button-grid">
+      <button class="btn secondary" type="button" onclick="clearForm()">Clear</button>
+      <button class="btn primary" type="button" onclick="updatePreview()">Generate</button>
+      <button class="btn success wide" type="button" onclick="window.print()">Print / Save as PDF</button>
+    </div>
+  </aside>
+
+  <main class="preview-wrap">
+    <div class="paper">
+      <div class="date" id="pDate"></div>
+      <div class="recipient">
+        <div id="pRecipientDept"></div>
+        <div id="pRecipientCompany"></div>
       </div>
-      <div class="signature-field" style="align-items:flex-start;">
-        <span>Company Stamp:</span>
-        <textarea id="companyStamp" class="stamp-box" placeholder="Optional note / stamp area"></textarea>
+      <p>Dear Sir / Madam,</p>
+      <div class="subject" id="pSubject"></div>
+
+      <div id="letterBody"></div>
+
+      <div class="signature">
+        <p>Thank you.</p>
+        <p>Yours faithfully,</p>
+        <p>For and on behalf of <strong id="pCompanyFooter">[COMPANY NAME]</strong></p>
+        <div class="signature-space"></div>
+        <div><strong id="pSignName">[AUTHORIZED SIGNATORY]</strong></div>
+        <div id="pSignDesignation">[DESIGNATION]</div>
+        <div>Contact No.: <span id="pSignContact">-</span></div>
+        <div>Email: <span id="pSignEmail">-</span></div>
       </div>
+
+      <div class="small-note">Company stamp / official authorization may be affixed where applicable.</div>
     </div>
   </main>
+</div>
 
-  <div class="hint">Tip: In the print window, choose A4, Portrait, Scale 100%, and turn off browser headers and footers.</div>
+<script>
+function esc(s){
+  return String(s ?? "").replace(/[&<>"']/g, m => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[m]));
+}
+function nl(s){ return esc(s).replace(/\n/g,"<br>"); }
+function value(id, fallback=""){
+  const el=document.getElementById(id);
+  if(!el) return fallback;
+  return el.value.trim() || fallback;
+}
+function money(v){
+  const n=parseFloat(v||0);
+  return "RM " + n.toLocaleString("en-MY",{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+function fmtDate(v){
+  if(!v) return "-";
+  const d=new Date(v+"T00:00:00");
+  return d.toLocaleDateString("en-GB",{day:"2-digit",month:"long",year:"numeric"});
+}
+function switchRequest(){
+  document.querySelectorAll(".request-fields").forEach(x=>x.classList.add("hidden"));
+  const map={
+    credit:"creditFields",
+    termination:"terminationFields",
+    subscription:"subscriptionFields",
+    tos:"tosFields",
+    billing:"billingFields",
+    custom:"customFields"
+  };
+  document.getElementById(map[value("requestType","credit")]).classList.remove("hidden");
+}
+function commonTable(){
+  return `
+    <table class="info-table">
+      <tr><td>Company Name</td><td>${esc(value("companyName","-"))}</td></tr>
+      <tr><td>Business Registration No.</td><td>${esc(value("brn","-"))}</td></tr>
+      <tr><td>Billing Account / Account No.</td><td>${esc(value("accountNo","-"))}</td></tr>
+      <tr><td>Contact Person</td><td>${esc(value("contactPerson","-"))}</td></tr>
+      <tr><td>Contact No.</td><td>${esc(value("contactNo","-"))}</td></tr>
+      <tr><td>Email</td><td>${esc(value("contactEmail","-"))}</td></tr>
+    </table>`;
+}
+function addTerminationRow(data={}){
+  const wrap=document.getElementById("terminationRows");
+  const div=document.createElement("div");
+  div.className="repeat-box termination-row";
+  div.innerHTML=`
+    <div class="repeat-head"><span>Termination Item</span><button type="button" class="btn danger mini" onclick="this.closest('.termination-row').remove();updatePreview()">Remove</button></div>
+    <label>Mobile / Service No.</label>
+    <input class="term-number" value="${esc(data.number||"")}" oninput="updatePreview()">
+    <label>Remarks</label>
+    <input class="term-remarks" value="${esc(data.remarks||"")}" placeholder="Optional" oninput="updatePreview()">
+  `;
+  wrap.appendChild(div);
+  updatePreview();
+}
+function getTerminationRows(){
+  return [...document.querySelectorAll(".termination-row")].map(r=>({
+    number:r.querySelector(".term-number").value.trim(),
+    remarks:r.querySelector(".term-remarks").value.trim()
+  })).filter(x=>x.number||x.remarks);
+}
+function addSubscriptionRow(data={}){
+  const wrap=document.getElementById("subscriptionRows");
+  const div=document.createElement("div");
+  div.className="repeat-box subscription-row";
+  div.innerHTML=`
+    <div class="repeat-head"><span>Subscription Item</span><button type="button" class="btn danger mini" onclick="this.closest('.subscription-row').remove();updatePreview()">Remove</button></div>
+    <div class="row3">
+      <div><label>Qty Lines</label><input type="number" min="1" class="sub-qty" value="${esc(data.qty||"")}" oninput="updatePreview()"></div>
+      <div><label>Type</label>
+        <select class="sub-type" onchange="updatePreview()">
+          <option ${data.type==="New"?"selected":""}>New</option>
+          <option ${data.type==="MNP"?"selected":""}>MNP</option>
+          <option ${data.type==="Renewal"?"selected":""}>Renewal</option>
+          <option ${data.type==="COP"?"selected":""}>COP</option>
+        </select>
+      </div>
+      <div><label>Contract</label>
+        <select class="sub-contract" onchange="updatePreview()">
+          <option value="24" ${data.contract==="24"?"selected":""}>24 Months</option>
+          <option value="36" ${data.contract==="36"?"selected":""}>36 Months</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div><label>Rate Plan</label><input class="sub-plan" value="${esc(data.plan||"")}" placeholder="e.g. CDB80" oninput="updatePreview()"></div>
+      <div><label>Monthly Fee (RM)</label><input type="number" step="0.01" class="sub-fee" value="${esc(data.fee||"")}" oninput="updatePreview()"></div>
+    </div>
+    <label>Device Model / Type</label>
+    <input class="sub-device" value="${esc(data.device||"")}" placeholder="e.g. Samsung A37 5G / SIM Only" oninput="updatePreview()">
+    <div class="row">
+      <div><label>Device Qty</label><input type="number" min="0" class="sub-deviceqty" value="${esc(data.deviceqty||"")}" oninput="updatePreview()"></div>
+      <div><label>Device Top-up (RM)</label><input type="number" min="0" step="0.01" class="sub-topup" value="${esc(data.topup||"")}" oninput="updatePreview()"></div>
+    </div>
+    <label>Remarks</label>
+    <input class="sub-remarks" value="${esc(data.remarks||"")}" placeholder="Optional" oninput="updatePreview()">
+  `;
+  wrap.appendChild(div);
+  updatePreview();
+}
+function getSubscriptionRows(){
+  return [...document.querySelectorAll(".subscription-row")].map(r=>({
+    qty:r.querySelector(".sub-qty").value.trim(),
+    type:r.querySelector(".sub-type").value,
+    contract:r.querySelector(".sub-contract").value,
+    plan:r.querySelector(".sub-plan").value.trim(),
+    fee:r.querySelector(".sub-fee").value.trim(),
+    device:r.querySelector(".sub-device").value.trim(),
+    deviceqty:r.querySelector(".sub-deviceqty").value.trim(),
+    topup:r.querySelector(".sub-topup").value.trim(),
+    remarks:r.querySelector(".sub-remarks").value.trim()
+  })).filter(x=>Object.values(x).some(v=>v));
+}
+function updatePreview(){
+  const company=value("companyName","[COMPANY NAME]");
+  document.getElementById("pDate").textContent=fmtDate(value("letterDate"));
+  document.getElementById("pRecipientDept").textContent=value("recipientDept","CelcomDigi Business Customer Service");
+  document.getElementById("pRecipientCompany").textContent=value("recipientCompany","CelcomDigi Berhad");
+  document.getElementById("pCompanyFooter").textContent=company;
+  document.getElementById("pSignName").textContent=value("signName","[AUTHORIZED SIGNATORY]");
+  document.getElementById("pSignDesignation").textContent=value("signDesignation","[DESIGNATION]");
+  document.getElementById("pSignContact").textContent=value("signContact","-");
+  document.getElementById("pSignEmail").textContent=value("signEmail","-");
 
-  <script>
-    const tbody = document.getElementById('msisdnRows');
+  const type=value("requestType","credit");
+  let subject="", body="";
 
-    for (let i = 1; i <= 5; i++) {
-      const rightNo = i + 5;
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${i}</td>
-        <td><input type="text" id="msisdn${i}" inputmode="numeric" maxlength="15" aria-label="MSISDN ${i}"></td>
-        <td>${rightNo}</td>
-        <td><input type="text" id="msisdn${rightNo}" inputmode="numeric" maxlength="15" aria-label="MSISDN ${rightNo}"></td>
-      `;
-      tbody.appendChild(tr);
-    }
+  if(type==="credit"){
+    const action=value("creditAction","increase");
+    const actionText=action==="increase"?"INCREASE":"REDUCE";
+    subject=`REQUEST TO ${actionText} CREDIT LIMIT`;
+    body=`
+      <p>We refer to the telecommunications account registered under <strong>${esc(company)}</strong>.</p>
+      <p>We would like to request for a ${action==="increase"?"increase":"reduction"} in the credit limit as detailed below:</p>
+      ${commonTable()}
+      <table class="info-table">
+        <tr><td>Affected Mobile / Service No.</td><td>${nl(value("creditServices","-"))}</td></tr>
+        <tr><td>Current Credit Limit</td><td>${money(value("currentLimit","0"))}</td></tr>
+        <tr><td>Requested New Credit Limit</td><td>${money(value("newLimit","0"))}</td></tr>
+        <tr><td>Requested Effective Date</td><td>${fmtDate(value("creditEffectiveDate"))}</td></tr>
+        <tr><td>Reason / Justification</td><td>${nl(value("creditReason","-"))}</td></tr>
+      </table>
+      <p>We kindly seek your assistance to process the above request accordingly.</p>`;
+  }
 
-    const fieldIds = [
-      'date', 'accountName', 'celcom', 'digi',
-      ...Array.from({length: 10}, (_, i) => `msisdn${i + 1}`),
-      'directorName', 'nric', 'companyStamp'
-    ];
+  if(type==="termination"){
+    subject="REQUEST FOR TERMINATION OF MOBILE / TELECOMMUNICATION SERVICES";
+    const rows=getTerminationRows();
+    const rowsHtml=rows.length?rows.map((x,i)=>`
+      <tr><td>${i+1}</td><td>${esc(x.number||"-")}</td><td>${esc(x.remarks||"-")}</td></tr>`).join("") :
+      `<tr><td>1</td><td>-</td><td>-</td></tr>`;
+    body=`
+      <p>We refer to the telecommunications account registered under <strong>${esc(company)}</strong>.</p>
+      <p>We hereby request for the termination of the following mobile / telecommunication service(s):</p>
+      ${commonTable()}
+      <table>
+        <thead><tr><th>No.</th><th>Mobile / Service No.</th><th>Remarks</th></tr></thead>
+        <tbody>${rowsHtml}</tbody>
+      </table>
+      <table class="info-table">
+        <tr><td>Requested Termination Date</td><td>${fmtDate(value("terminationDate"))}</td></tr>
+        <tr><td>Reason</td><td>${nl(value("terminationReason","-"))}</td></tr>
+      </table>
+      <p>Kindly process the termination accordingly and cease future billing for the affected service(s) after the effective termination date, subject to the applicable terms and conditions.</p>`;
+  }
 
-    function getFormData() {
-      const data = {};
-      fieldIds.forEach(id => {
-        const el = document.getElementById(id);
-        data[id] = el.type === 'checkbox' ? el.checked : el.value;
-      });
-      return data;
-    }
+  if(type==="subscription"){
+    subject="PURCHASE ORDER CONFIRMATION / NEW SUBSCRIPTION REQUEST";
+    const rows=getSubscriptionRows();
+    let totalQty=0,totalMonthly=0;
+    const rowsHtml=(rows.length?rows:[{}]).map((x,i)=>{
+      const qty=parseFloat(x.qty||0), fee=parseFloat(x.fee||0);
+      totalQty += qty || 0;
+      totalMonthly += (qty||0)*(fee||0);
+      return `<tr>
+        <td>${i+1}</td>
+        <td>${esc(x.qty||"-")}</td>
+        <td>${esc(x.type||"-")}</td>
+        <td>${esc(x.plan||"-")}</td>
+        <td>${x.fee?money(x.fee):"-"}</td>
+        <td>${esc(x.device||"-")}</td>
+        <td>${esc(x.deviceqty||"-")}</td>
+        <td>${esc(x.contract?x.contract+" Months":"-")}</td>
+        <td>${x.topup?money(x.topup):"-"}</td>
+        <td>${esc(x.remarks||"-")}</td>
+      </tr>`;
+    }).join("");
+    body=`
+      <p>We refer to our purchase order / subscription arrangement with CelcomDigi. We hereby confirm our request for the following new subscription(s):</p>
+      ${commonTable()}
+      <table class="info-table">
+        <tr><td>PO No.</td><td>${esc(value("poNo","-"))}</td></tr>
+        <tr><td>PO Date</td><td>${fmtDate(value("poDate"))}</td></tr>
+      </table>
+      <table>
+        <thead>
+          <tr>
+            <th>No.</th><th>Qty</th><th>Type</th><th>Rate Plan</th><th>Monthly Fee</th>
+            <th>Device</th><th>Device Qty</th><th>Contract</th><th>Top-up</th><th>Remarks</th>
+          </tr>
+        </thead>
+        <tbody>${rowsHtml}</tbody>
+      </table>
+      <table class="info-table">
+        <tr><td>Total Requested Lines</td><td>${totalQty || 0}</td></tr>
+        <tr><td>Estimated Monthly Plan Commitment</td><td>${money(totalMonthly)}</td></tr>
+        <tr><td>Notes / Special Terms</td><td>${nl(value("subscriptionNotes","-"))}</td></tr>
+      </table>
+      <p>We confirm and authorize CelcomDigi to proceed with the above subscription(s) based on the agreed plan, device, pricing and contract tenure.</p>`;
+  }
 
-    function applyFormData(data) {
-      fieldIds.forEach(id => {
-        const el = document.getElementById(id);
-        if (!el || data[id] === undefined) return;
-        if (el.type === 'checkbox') el.checked = Boolean(data[id]);
-        else el.value = data[id];
-      });
-    }
+  if(type==="tos"){
+    const tos=value("tosType","company");
+    subject=tos==="company" ? "REQUEST FOR TRANSFER OF SERVICE / OWNERSHIP" : "REQUEST TO TRANSFER COMPANY MOBILE SERVICE TO PERSONAL OWNERSHIP";
+    body=`
+      <p>We refer to the telecommunications account registered under <strong>${esc(company)}</strong>.</p>
+      <p>We hereby request to transfer the following service(s) to the party stated below:</p>
+      ${commonTable()}
+      <table class="info-table">
+        <tr><td>Transfer Type</td><td>${tos==="company"?"Company to Company":"Company to Personal"}</td></tr>
+        <tr><td>Transfer To</td><td>${esc(value("transferTo","-"))}</td></tr>
+        <tr><td>New BRN / NRIC</td><td>${esc(value("transferId","-"))}</td></tr>
+        <tr><td>Mobile / Service No.</td><td>${nl(value("transferNumbers","-"))}</td></tr>
+        <tr><td>Requested Effective Date</td><td>${fmtDate(value("transferDate"))}</td></tr>
+      </table>
+      <p>We confirm that the above transfer is duly authorized by the company and kindly request your assistance to process the transfer accordingly.</p>`;
+  }
 
-    function saveForm() {
-      localStorage.setItem('celcomdigiTerminationForm', JSON.stringify(getFormData()));
-      alert('Form saved in this browser.');
-    }
+  if(type==="billing"){
+    subject=value("billingSubject","BILLING / ACCOUNT REQUEST").toUpperCase();
+    body=`
+      <p>We refer to the telecommunications account registered under <strong>${esc(company)}</strong>.</p>
+      ${commonTable()}
+      <table class="info-table">
+        <tr><td>Affected Account / Mobile No.</td><td>${nl(value("billingAffected","-"))}</td></tr>
+        <tr><td>Request Details</td><td>${nl(value("billingDetails","-"))}</td></tr>
+      </table>
+      <p>We kindly seek your assistance to review and process the above request accordingly.</p>`;
+  }
 
-    function loadForm() {
-      const saved = localStorage.getItem('celcomdigiTerminationForm');
-      if (!saved) {
-        alert('No saved form found.');
-        return;
-      }
-      applyFormData(JSON.parse(saved));
-    }
+  if(type==="custom"){
+    subject=value("customSubject","CORPORATE REQUEST").toUpperCase();
+    body=`
+      <p>We refer to the telecommunications account registered under <strong>${esc(company)}</strong>.</p>
+      ${commonTable()}
+      <p>${nl(value("customBody","-"))}</p>
+      ${value("customAdditional")?`<p><strong>Additional Details:</strong><br>${nl(value("customAdditional"))}</p>`:""}
+      <p>We kindly seek your assistance to process the above request accordingly.</p>`;
+  }
 
-    function clearForm() {
-      if (!confirm('Clear all form fields?')) return;
-      document.querySelectorAll('input[type="text"], input[type="date"], textarea').forEach(el => el.value = '');
-      document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
-    }
-
-    function generatePDF() {
-      window.print();
-    }
-
-    // Set today's date for a new form.
-    if (!document.getElementById('date').value) {
-      const now = new Date();
-      const localDate = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
-        .toISOString().slice(0, 10);
-      document.getElementById('date').value = localDate;
-    }
-  </script>
+  document.getElementById("pSubject").textContent=subject;
+  document.getElementById("letterBody").innerHTML=body;
+}
+function clearForm(){
+  document.querySelectorAll("input, textarea").forEach(el=>el.value="");
+  document.getElementById("recipientDept").value="CelcomDigi Business Customer Service";
+  document.getElementById("recipientCompany").value="CelcomDigi Berhad";
+  document.getElementById("requestType").value="credit";
+  document.getElementById("creditAction").value="increase";
+  document.getElementById("terminationRows").innerHTML="";
+  document.getElementById("subscriptionRows").innerHTML="";
+  addTerminationRow();
+  addSubscriptionRow();
+  document.getElementById("letterDate").value=new Date().toISOString().slice(0,10);
+  switchRequest();
+  updatePreview();
+}
+(function init(){
+  document.getElementById("letterDate").value=new Date().toISOString().slice(0,10);
+  addTerminationRow();
+  addSubscriptionRow();
+  switchRequest();
+  updatePreview();
+})();
+</script>
 </body>
 </html>
