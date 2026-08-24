@@ -1,1 +1,1 @@
-# TERMINATION-LETTER
+# Master-Corporate-Letter-Generator
