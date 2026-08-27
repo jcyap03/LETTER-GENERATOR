@@ -270,6 +270,11 @@
     }
   }
 
+
+  .msisdn-row .row{
+    grid-template-columns:1fr 1fr;
+  }
+
 </style>
 </head>
 <body>
@@ -287,6 +292,7 @@
         <option value="subscription">New Subscription Confirmation</option>
         <option value="tos">Transfer of Service / Ownership</option>
         <option value="billing">Billing / Account Request</option>
+        <option value="msisdn">Change MSISDN</option>
         <option value="custom">Custom Corporate Letter</option>
       </select>
     </div>
@@ -364,6 +370,24 @@
       <textarea id="billingDetails" placeholder="Describe the billing/account request" oninput="updatePreview()"></textarea>
       <label>Affected Account / Mobile No.</label>
       <textarea id="billingAffected" placeholder="Account or numbers" oninput="updatePreview()"></textarea>
+    </div>
+
+
+    <div id="msisdnFields" class="section request-fields hidden">
+      <div class="section-title">Change MSISDN</div>
+
+      <label>MSISDN Change Items</label>
+      <div id="msisdnRows"></div>
+      <button class="btn secondary mini" onclick="addMsisdnRow()" type="button">+ Add MSISDN Row</button>
+
+      <label>RM50 Administrative Fee</label>
+      <select id="msisdnFeeOption" onchange="updatePreview()">
+        <option value="customer">Customer Accepts RM50 Admin Fee</option>
+        <option value="waived">Waived / Not Required</option>
+      </select>
+
+      <label>Additional Remarks (Optional)</label>
+      <textarea id="msisdnRemarks" placeholder="Optional remarks" oninput="updatePreview()"></textarea>
     </div>
 
     <div id="customFields" class="section request-fields hidden">
@@ -463,6 +487,7 @@ function switchRequest(){
     subscription:"subscriptionFields",
     tos:"tosFields",
     billing:"billingFields",
+    msisdn:"msisdnFields",
     custom:"customFields"
   };
   document.getElementById(map[value("requestType","credit")]).classList.remove("hidden");
@@ -475,6 +500,38 @@ function commonTable(){
       <tr><td>Billing Account / Account No.</td><td>${esc(value("accountNo","-"))}</td></tr>
     </table>`;
 }
+
+function addMsisdnRow(data={}){
+  const wrap=document.getElementById("msisdnRows");
+  const div=document.createElement("div");
+  div.className="repeat-box msisdn-row";
+  div.innerHTML=`
+    <div class="repeat-head">
+      <span>MSISDN Change Item</span>
+      <button type="button" class="btn danger mini" onclick="this.closest('.msisdn-row').remove();updatePreview()">Remove</button>
+    </div>
+    <div class="row">
+      <div>
+        <label>Current MSISDN</label>
+        <input class="msisdn-current" value="${esc(data.current||"")}" placeholder="e.g. 0168048391" oninput="updatePreview()">
+      </div>
+      <div>
+        <label>Requested New MSISDN</label>
+        <input class="msisdn-new" value="${esc(data.newNumber||"")}" placeholder="e.g. 0168618729" oninput="updatePreview()">
+      </div>
+    </div>
+  `;
+  wrap.appendChild(div);
+  updatePreview();
+}
+
+function getMsisdnRows(){
+  return [...document.querySelectorAll(".msisdn-row")].map(r=>({
+    current:r.querySelector(".msisdn-current").value.trim(),
+    newNumber:r.querySelector(".msisdn-new").value.trim()
+  })).filter(x=>x.current||x.newNumber);
+}
+
 function addTerminationRow(data={}){
   const wrap=document.getElementById("terminationRows");
   const div=document.createElement("div");
@@ -667,6 +724,37 @@ function updatePreview(){
       <p>We kindly seek your assistance to review and process the above request accordingly.</p>`;
   }
 
+
+  if(type==="msisdn"){
+    subject="REQUEST FOR MSISDN CHANGE";
+    const rows=getMsisdnRows();
+    const rowsHtml=(rows.length?rows:[{}]).map((x,i)=>`
+      <tr>
+        <td>${i+1}</td>
+        <td>${esc(x.current||"-")}</td>
+        <td>${esc(x.newNumber||"-")}</td>
+      </tr>`).join("");
+
+    const feeOption=value("msisdnFeeOption","customer");
+    const feeParagraph = feeOption==="customer"
+      ? `<p>We acknowledge and accept the RM50 administrative fee associated with this MSISDN change request. Kindly impose the RM50 administrative fee in our next billing cycle.</p>`
+      : "";
+
+    body=`
+      <p>We refer to the telecommunications account registered under <strong>${esc(company)}</strong>.</p>
+      <p>We hereby request for a change of mobile number (MSISDN) for the following registered line(s) under our corporate account with CelcomDigi Berhad:</p>
+      ${commonTable()}
+      <table>
+        <thead>
+          <tr><th>No.</th><th>Current MSISDN</th><th>Requested New MSISDN</th></tr>
+        </thead>
+        <tbody>${rowsHtml}</tbody>
+      </table>
+      ${feeParagraph}
+      ${value("msisdnRemarks")?`<p><strong>Remarks:</strong><br>${nl(value("msisdnRemarks"))}</p>`:""}
+      <p>We appreciate your assistance and prompt processing of this request. Should further clarification be required, please contact us.</p>`;
+  }
+
   if(type==="custom"){
     subject=value("customSubject","CORPORATE REQUEST").toUpperCase();
     body=`
@@ -687,8 +775,10 @@ function clearForm(){
   document.getElementById("requestType").value="credit";
   document.getElementById("terminationRows").innerHTML="";
   document.getElementById("subscriptionRows").innerHTML="";
+  document.getElementById("msisdnRows").innerHTML="";
   addTerminationRow();
   addSubscriptionRow();
+  addMsisdnRow();
   document.getElementById("letterDate").value=new Date().toISOString().slice(0,10);
   switchRequest();
   updatePreview();
@@ -697,6 +787,7 @@ function clearForm(){
   document.getElementById("letterDate").value=new Date().toISOString().slice(0,10);
   addTerminationRow();
   addSubscriptionRow();
+  addMsisdnRow();
   switchRequest();
   updatePreview();
 })();
